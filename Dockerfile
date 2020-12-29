@@ -1,6 +1,7 @@
-FROM ubuntu:xenial
-RUN apt-get update
-RUN apt-get install -y wget
+FROM ubuntu:focal
+RUN apt update
+RUN apt -y full-upgrade
+RUN apt -y install wget
 WORKDIR /
 COPY ./zims ./zims
 COPY ./scripts ./scripts
