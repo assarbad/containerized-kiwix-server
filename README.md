@@ -44,7 +44,7 @@ To turn it off:
 ```shell
 $ docker stop $(docker ps -qf "name=kiwix-serve")
 # ... or with Podman:
-$ podman stop $(podman ps -qf name=kiwix-serve)
+$ podman stop $(podman ps -qf "name=kiwix-serve")
 ```
 
 ## Step 5: Try it out in the browser
@@ -76,10 +76,14 @@ Go to http://localhost:8080.
   * Podman:  
     ```
     make DEFAULT=podman
+    # ... or:
+    make podman
     ```
   * Podman, but giving an alternative location for the ZIM files:  
     ```
     make DEFAULT=podman ZIMDIR=$(pwd)/..
+    # ... or:
+    make ZIMDIR=$(pwd)/.. podman
     ```
 * Stop and remove container (if it exists) and image (if it exists):
 
@@ -91,7 +95,12 @@ Go to http://localhost:8080.
     ```
     make DEFAULT=podman clean
     ```
-* Rebuild container and image, this combines the two actions above by first stopping and removing container and then image, followed by creating both of those from scratch.
+* Rebuild container and image, this combines the two actions above by first stopping and removing container and then image, followed by creating both of those from scratch.  
+  ```
+  make rebuild
+  # ... or:
+  make DEFAULT=podman rebuild
+  ```
 
 The makefile will start the container with a read-only data volume for the ZIM files. No need that the container has any write access to those.
 
