@@ -1,11 +1,10 @@
 FROM ubuntu:focal
-RUN apt update
-RUN apt -y full-upgrade
-RUN apt -y install wget
-WORKDIR /
-COPY ./zims ./zims
-COPY ./scripts ./scripts
-RUN ./scripts/provision.sh
-RUN ./scripts/makelibrary.sh
+ENV TGTDIR=/usr/local/bin
+RUN env LANG=C LC_ALL=C apt-get update
+RUN env DEBIAN_FRONTEND=noninteractive LANG=C LC_ALL=C apt-get -y full-upgrade
+RUN env DEBIAN_FRONTEND=noninteractive LANG=C LC_ALL=C apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install wget
+VOLUME /zims
+COPY ./scripts/*.sh $TGTDIR/
+RUN provision.sh
 EXPOSE 8080
-ENTRYPOINT ["kiwix-serve", "--port",  "8080", "--library", "/library.xml"]
+ENTRYPOINT ["entrypoint.sh"]
